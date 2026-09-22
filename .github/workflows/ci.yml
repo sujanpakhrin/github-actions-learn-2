@@ -103,26 +103,6 @@ jobs:
 
           path.write_text(content)
           PY
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path("learning-k8s/03-helm/flask-app/values.yaml")
-          content = path.read_text()
-
-          content, count = re.subn(
-              r'(?s)(app:\s+replicaCount:.*?image:\s+repository:.*?\n\s+tag:\s*)"[^"]+"',
-              r'\1"${{ github.sha }}"',
-              content,
-              count=1
-          )
-
-          if count != 1:
-              raise SystemExit("Could not find the Flask app image tag")
-
-          path.write_text(content)
-          PY
 
       - name: Commit and push GitOps change
         run: |
